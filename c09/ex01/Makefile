@@ -5,19 +5,30 @@
 #                                                     +:+ +:+         +:+      #
 #    By: jasuh <jasuh@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/05/21 18:44:22 by jasuh             #+#    #+#              #
-#    Updated: 2021/05/21 18:45:58 by jasuh            ###   ########.fr        #
+#    Created: 2021/05/24 15:58:26 by jasuh             #+#    #+#              #
+#    Updated: 2021/05/26 12:28:39 by jasuh            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-test : main.o write.o read.o
-	gcc -o test main.o write.o read.o
+TARGET = libft.a
 
-main.o : main.c io.h
-	gcc -o main.o main.c 
+SRCS = srcs/ft_putchar.c srcs/ft_swap.c srcs/ft_putstr.c srcs/ft_strlen.c srcs/ft_strcmp.c
+OBJS = $(SRCS:.c=.o)
+INC = includes/ft.h
 
-write.o : write.c io.h
-	gcc -c write.c
+CC = gcc
+CFLAGS = -c -Wall -Wextra -Werror
 
-read.o : read.c io.h
-	gcc -c read.c
+all : $(TARGET)
+
+$(TARGET) : $(OBJS)
+	ar -cr $@ $^
+%.o: %.c
+	$(CC) $(CFLAGS) $< -o $@ -I $(INC)
+clean :
+	rm -rf $(OBJS)
+fclean : clean
+	rm -rf $(TARGET)
+re : fclean all
+
+.PHONY : all clean fclean re 
